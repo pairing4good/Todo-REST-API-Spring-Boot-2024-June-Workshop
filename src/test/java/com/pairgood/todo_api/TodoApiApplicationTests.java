@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TodoApiApplicationTests {
 	@Autowired
@@ -31,14 +34,12 @@ public class TodoApiApplicationTests {
 		ResponseEntity<ResponseTodoList> response=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todo, ResponseTodoList.class);
 
 		response.getStatusCode();
-		Assertions.assertEquals(201,response.getStatusCode().value());
+		assertEquals(201,response.getStatusCode().value());
 		ResponseTodoList body = response.getBody();
-		body.getMessage();
-		Assertions.assertEquals("Item added to todo list",body.getMessage());
-		body.getCode();
-		Assertions.assertEquals(201,body.getCode());
-		body.getHttpStatus();
-		Assertions.assertEquals(HttpStatus.CREATED,body.getHttpStatus());
+		assertNotNull(body);
+        assertEquals("Item added to todo list",body.getMessage());
+		assertEquals(201,body.getCode());
+		assertEquals(HttpStatus.CREATED,body.getHttpStatus());
 
 	}
 

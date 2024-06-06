@@ -20,8 +20,8 @@ public class TodoController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/additem")
     public ResponseEntity<ResponseTodoList> AddItemTolist(@Valid @RequestBody Todo todo){
-        long todoId=0;
-        todoId=todoService.AddItemToThelist(todo);
+
+        long todoId=todoService.AddItemToThelist(todo);
 
         if(todoId>0){
             ResponseTodoList responseTodoList= new ResponseTodoList("Item added to todo list", HttpStatus.CREATED);
