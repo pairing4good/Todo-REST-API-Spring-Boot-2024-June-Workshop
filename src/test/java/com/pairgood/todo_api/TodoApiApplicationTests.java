@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
@@ -31,10 +32,17 @@ public class TodoApiApplicationTests {
 
 		response.getStatusCode();
 		Assertions.assertEquals(201,response.getStatusCode().value());
-
-
+		ResponseTodoList body = response.getBody();
+		body.getMessage();
+		Assertions.assertEquals("Item added to todo list",body.getMessage());
+		body.getCode();
+		Assertions.assertEquals(201,body.getCode());
+		body.getHttpStatus();
+		Assertions.assertEquals(HttpStatus.CREATED,body.getHttpStatus());
 
 	}
+
+
 
 
 }
