@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,8 +43,11 @@ public class TodoApiApplicationTests {
 		assertEquals(HttpStatus.CREATED,body.getHttpStatus());
 
 	}
+@Test
+void shouldGetToDoList(){
+	List<Todo> response=testRestTemplate.getForObject("http://localhost:"+port+"/api/v1/todo/getitem", List.class);
 
 
-
+}
 
 }
