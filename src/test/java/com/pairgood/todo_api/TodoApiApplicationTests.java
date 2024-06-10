@@ -80,4 +80,18 @@ public class TodoApiApplicationTests {
 
     }
 
+    @Test
+    void shouldDeleteItem() {
+        createTodo();
+        long beforeCount = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todocount",
+                Long.class);
+        testRestTemplate.delete("http://localhost:" + port + "/api/v1/todo/deleteitem/1110");
+        long afterCount = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todocount",
+                Long.class);
+
+        assertEquals(beforeCount - 1, afterCount);
+
+
+    }
+
 }
