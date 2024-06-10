@@ -2,7 +2,6 @@ package com.pairgood.todo_api;
 
 import com.pairgood.todo_api.todo.ResponseTodoList;
 import com.pairgood.todo_api.todo.Todo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,11 +14,10 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TodoApiApplicationTests {
+    int counter = 0;
     @Autowired
     private TestRestTemplate testRestTemplate;
     @LocalServerPort
@@ -45,20 +43,24 @@ public class TodoApiApplicationTests {
     }
 
     @Test
+
     void shouldGetToDoList() {
 
-        Todo todo = new Todo(0, "Spring Testing Session", "Spring Testing", false, LocalDate.now(), null, null);
-        Todo todoTwo = new Todo(0, "Spring Testing Session two", "Spring Testing two", false, LocalDate.now(), null, null);
-        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todo, ResponseTodoList.class);
-        ResponseEntity<ResponseTodoList> response2 = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todoTwo, ResponseTodoList.class);
+        createTodo();
 
         List<LinkedHashMap> responseList = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todolist", List.class);
+
         assertNotNull(responseList);
-
-        int size = responseList.size();
-        Assertions.assertTrue(size >= 2);
-
+        assertTrue(responseList.size() > 0);
         assertEquals(1110, responseList.get(0).get("todoId"));
+    }
+
+    private void createTodo() {
+        counter += 1;
+        Todo todo = new Todo(0, "Spring Testing Session" + counter, "Spring Testing" + counter, false, LocalDate.now(), null, null);
+        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todo, ResponseTodoList.class);
+        assertEquals(201, response.getStatusCode().value());
+
     }
 
 }
