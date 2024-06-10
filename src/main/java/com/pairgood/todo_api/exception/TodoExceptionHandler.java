@@ -32,6 +32,7 @@ public class TodoExceptionHandler extends ResponseEntityExceptionHandler {
 
         return objectResponseEntity(new TodoCustomException(HttpStatus.BAD_REQUEST, error, ex));
     }
+
     private ResponseEntity<Object> objectResponseEntity(TodoCustomException TodoCustomException) {
         return new ResponseEntity<>(TodoCustomException, TodoCustomException.getHttpStatus());
     }

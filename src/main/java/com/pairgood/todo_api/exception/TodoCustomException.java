@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class TodoCustomException  {
+public class TodoCustomException {
     private HttpStatus httpStatus;
     private int code;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
@@ -22,49 +21,49 @@ public class TodoCustomException  {
     private String ErrorMessage;
 
 
-    private TodoCustomException(){
-        localDateTime=LocalDateTime.now();
+    private TodoCustomException() {
+        localDateTime = LocalDateTime.now();
     }
 
 
-    TodoCustomException(HttpStatus httpStatus){
+    TodoCustomException(HttpStatus httpStatus) {
         this();
-        this.httpStatus=httpStatus;
-        this.code=httpStatus.value();
+        this.httpStatus = httpStatus;
+        this.code = httpStatus.value();
     }
 
-    TodoCustomException(HttpStatus httpStatus, Throwable error){
-      this();
-      this.httpStatus=httpStatus;
-      this.message="An error has occured";
-      this.ErrorMessage=error.getLocalizedMessage();
-    }
-
-    TodoCustomException(HttpStatus httpStatus, String message, Throwable error){
+    TodoCustomException(HttpStatus httpStatus, Throwable error) {
         this();
-        this.httpStatus=httpStatus;
-        this.message=message;
-        this.ErrorMessage=error.getLocalizedMessage();
+        this.httpStatus = httpStatus;
+        this.message = "An error has occured";
+        this.ErrorMessage = error.getLocalizedMessage();
     }
 
-     public HttpStatus getHttpStatus() {
-     return httpStatus;
-     }
+    TodoCustomException(HttpStatus httpStatus, String message, Throwable error) {
+        this();
+        this.httpStatus = httpStatus;
+        this.message = message;
+        this.ErrorMessage = error.getLocalizedMessage();
+    }
 
-     public void setMessage(String message) {
-     this.message = message;
-     }
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 
-     public String getErrorMessage() {
-     return ErrorMessage;
-     }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-     public void setErrorMessage(String errorMessage) {
-     ErrorMessage = errorMessage;
-     }
+    public String getErrorMessage() {
+        return ErrorMessage;
+    }
 
-     public int getCode() {
-     return code;
-     }
+    public void setErrorMessage(String errorMessage) {
+        ErrorMessage = errorMessage;
+    }
+
+    public int getCode() {
+        return code;
+    }
 
 }

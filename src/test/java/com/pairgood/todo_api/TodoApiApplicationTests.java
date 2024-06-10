@@ -9,60 +9,56 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TodoApiApplicationTests {
-	@Autowired
-	private TestRestTemplate testRestTemplate;
-	@LocalServerPort
-	private int port;
+    @Autowired
+    private TestRestTemplate testRestTemplate;
+    @LocalServerPort
+    private int port;
 
-	@Test
-	void contextLoads(){
+    @Test
+    void contextLoads() {
 
-	}
-	@Test
-	void shouldCreateTodo(){
-		Todo todo= new Todo(0,"Spring Testing Session","Spring Testing",false, LocalDate.now(),null,null);
-		ResponseEntity<ResponseTodoList> response=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todo, ResponseTodoList.class);
+    }
 
-		response.getStatusCode();
-		assertEquals(201,response.getStatusCode().value());
-		ResponseTodoList body = response.getBody();
-		assertNotNull(body);
-        assertEquals("Item added to todo list",body.getMessage());
-		assertEquals(201,body.getCode());
-		assertEquals(HttpStatus.CREATED,body.getHttpStatus());
+    @Test
+    void shouldCreateTodo() {
+        Todo todo = new Todo(0, "Spring Testing Session", "Spring Testing", false, LocalDate.now(), null, null);
+        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todo, ResponseTodoList.class);
 
-	}
-@Test
-void shouldGetToDoList(){
+        response.getStatusCode();
+        assertEquals(201, response.getStatusCode().value());
+        ResponseTodoList body = response.getBody();
+        assertNotNull(body);
+        assertEquals("Item added to todo list", body.getMessage());
+        assertEquals(201, body.getCode());
+        assertEquals(HttpStatus.CREATED, body.getHttpStatus());
+    }
 
-	Todo todo= new Todo(0,"Spring Testing Session","Spring Testing",false, LocalDate.now(),null,null);
-	Todo todoTwo= new Todo(0,"Spring Testing Session two","Spring Testing two",false, LocalDate.now(),null,null);
-	ResponseEntity<ResponseTodoList> response=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todo, ResponseTodoList.class);
-	ResponseEntity<ResponseTodoList> response2=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todoTwo, ResponseTodoList.class);
+    @Test
+    void shouldGetToDoList() {
 
-	List<LinkedHashMap> responseList= testRestTemplate.getForObject("http://localhost:"+port+"/api/v1/todo/todolist", List.class);
-	assertNotNull(responseList);
+        Todo todo = new Todo(0, "Spring Testing Session", "Spring Testing", false, LocalDate.now(), null, null);
+        Todo todoTwo = new Todo(0, "Spring Testing Session two", "Spring Testing two", false, LocalDate.now(), null, null);
+        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todo, ResponseTodoList.class);
+        ResponseEntity<ResponseTodoList> response2 = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todoTwo, ResponseTodoList.class);
 
-    int size = responseList.size();
-	Assertions.assertTrue(size >= 2);
+        List<LinkedHashMap> responseList = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todolist", List.class);
+        assertNotNull(responseList);
 
-	assertEquals(1110,responseList.get(0).get("todoId"));
+        int size = responseList.size();
+        Assertions.assertTrue(size >= 2);
 
-
-
-}
+        assertEquals(1110, responseList.get(0).get("todoId"));
+    }
 
 }

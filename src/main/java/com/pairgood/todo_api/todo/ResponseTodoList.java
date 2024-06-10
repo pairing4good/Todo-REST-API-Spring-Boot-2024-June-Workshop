@@ -7,7 +7,7 @@ public class ResponseTodoList {
     private int code;
     private HttpStatus httpStatus;
 
-    public ResponseTodoList(String message,  HttpStatus httpStatus) {
+    public ResponseTodoList(String message, HttpStatus httpStatus) {
         this.message = message;
         this.code = httpStatus.value();
         this.httpStatus = httpStatus;

@@ -12,26 +12,26 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping(TodoController.BASE_URL)
 public class TodoController {
-    public static final String BASE_URL="api/v1/todo";
-    private static final Logger logger=Logger.getLogger(TodoController.class.getName());
+    public static final String BASE_URL = "api/v1/todo";
+    private static final Logger logger = Logger.getLogger(TodoController.class.getName());
 
     @Autowired
     private TodoService todoService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/additem")
-    public ResponseEntity<ResponseTodoList> AddItemTolist(@Valid @RequestBody Todo todo){
+    public ResponseEntity<ResponseTodoList> AddItemTolist(@Valid @RequestBody Todo todo) {
 
-        long todoId=todoService.AddItemToThelist(todo);
+        long todoId = todoService.AddItemToThelist(todo);
 
-        if(todoId>0){
-            ResponseTodoList responseTodoList= new ResponseTodoList("Item added to todo list", HttpStatus.CREATED);
-            logger.info(responseTodoList.getMessage()+". code: "+responseTodoList.getCode());
-            return new ResponseEntity<ResponseTodoList>(responseTodoList,HttpStatus.CREATED);
+        if (todoId > 0) {
+            ResponseTodoList responseTodoList = new ResponseTodoList("Item added to todo list", HttpStatus.CREATED);
+            logger.info(responseTodoList.getMessage() + ". code: " + responseTodoList.getCode());
+            return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.CREATED);
 
-        }else{
-            ResponseTodoList responseTodoList= new ResponseTodoList("Item Not added to todo list", HttpStatus.BAD_REQUEST);
-            logger.info(responseTodoList.getMessage()+". code: "+responseTodoList.getCode());
-            return new ResponseEntity<ResponseTodoList>(responseTodoList,HttpStatus.BAD_REQUEST);
+        } else {
+            ResponseTodoList responseTodoList = new ResponseTodoList("Item Not added to todo list", HttpStatus.BAD_REQUEST);
+            logger.info(responseTodoList.getMessage() + ". code: " + responseTodoList.getCode());
+            return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -39,41 +39,38 @@ public class TodoController {
 
     /**
      * endpoint for add item
+     *
      * @param todo
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/updateitem/{updateTodoId}")
-    public ResponseEntity<ResponseTodoList> UpdateItem(@PathVariable long updateTodoId, @Valid @RequestBody Todo todo){
+    public ResponseEntity<ResponseTodoList> UpdateItem(@PathVariable long updateTodoId, @Valid @RequestBody Todo todo) {
 
         //verify if the id provided is valid before update
-        boolean isTodoIdValid=todoService.isTodoItemIdValid(updateTodoId);
+        boolean isTodoIdValid = todoService.isTodoItemIdValid(updateTodoId);
 
-        if(isTodoIdValid){
-            long todoId=0;
-            todoId=todoService.UpdateTodoItem(updateTodoId,todo);
+        if (isTodoIdValid) {
+            long todoId = 0;
+            todoId = todoService.UpdateTodoItem(updateTodoId, todo);
 
-            if(todoId>0){
-                ResponseTodoList responseTodoList= new ResponseTodoList("Item with the following title "+todo.getTodoTitle()+" updated", HttpStatus.OK);
-                logger.info(responseTodoList.getMessage()+". code: "+responseTodoList.getCode());
-                return new ResponseEntity<ResponseTodoList>(responseTodoList,HttpStatus.OK);
+            if (todoId > 0) {
+                ResponseTodoList responseTodoList = new ResponseTodoList("Item with the following title " + todo.getTodoTitle() + " updated", HttpStatus.OK);
+                logger.info(responseTodoList.getMessage() + ". code: " + responseTodoList.getCode());
+                return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.OK);
 
-            }else{
-                ResponseTodoList responseTodoList= new ResponseTodoList("Item Not updated", HttpStatus.BAD_REQUEST);
-                logger.info(responseTodoList.getMessage()+". code: "+responseTodoList.getCode());
-                return new ResponseEntity<ResponseTodoList>(responseTodoList,HttpStatus.BAD_REQUEST);
+            } else {
+                ResponseTodoList responseTodoList = new ResponseTodoList("Item Not updated", HttpStatus.BAD_REQUEST);
+                logger.info(responseTodoList.getMessage() + ". code: " + responseTodoList.getCode());
+                return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.BAD_REQUEST);
             }
 
 
-        }else {
+        } else {
             ResponseTodoList responseTodoList = new ResponseTodoList("Request not successful, invalid information provided. Please try again.", HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.NOT_FOUND);
 
         }
-
-
-
-
 
 
     }
@@ -81,39 +78,39 @@ public class TodoController {
 
     /**
      * return to-do list
+     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/todolist")
-    public List<Todo> getTodoList(){
+    public List<Todo> getTodoList() {
         return todoService.getMyTodoList();
 
     }
 
 
-
     /**
      * endpoint  delete item
+     *
      * @param deleteTodoId
      * @return
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteitem/{deleteTodoId}")
-    public ResponseEntity<ResponseTodoList> DeleteItem(@PathVariable long deleteTodoId){
+    public ResponseEntity<ResponseTodoList> DeleteItem(@PathVariable long deleteTodoId) {
 
         //verify if the id provided is valid before deleting
-        boolean isTodoIdValid=todoService.isTodoItemIdValid(deleteTodoId);
+        boolean isTodoIdValid = todoService.isTodoItemIdValid(deleteTodoId);
 
-        if(isTodoIdValid){
+        if (isTodoIdValid) {
 
             todoService.DeleteItem(deleteTodoId);
 
 
-                ResponseTodoList responseTodoList= new ResponseTodoList("Item deleted", HttpStatus.OK);
-                logger.info(responseTodoList.getMessage()+". code: "+responseTodoList.getCode());
-                return new ResponseEntity<ResponseTodoList>(responseTodoList,HttpStatus.OK);
+            ResponseTodoList responseTodoList = new ResponseTodoList("Item deleted", HttpStatus.OK);
+            logger.info(responseTodoList.getMessage() + ". code: " + responseTodoList.getCode());
+            return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.OK);
 
 
-
-        }else {
+        } else {
             ResponseTodoList responseTodoList = new ResponseTodoList("Request not successful, invalid information provided. Please try again.", HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<ResponseTodoList>(responseTodoList, HttpStatus.NOT_FOUND);
@@ -121,31 +118,18 @@ public class TodoController {
         }
 
 
-
-
-
-
     }
-
-
-
-
 
 
     /**
      * Return number of to-do item
+     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/todocount")
-    public long getNumberTodo(){
+    public long getNumberTodo() {
         return todoService.getNumberTodoItem();
     }
-
-
-
-
-
-
 
 
 }

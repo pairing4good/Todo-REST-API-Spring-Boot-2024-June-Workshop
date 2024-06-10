@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 @Service
 public class TodoService {
-    private static Logger logger = Logger.getLogger(TodoService.class.getName());
+    private static final Logger logger = Logger.getLogger(TodoService.class.getName());
     @Autowired
     private TodoRepository todoRepository;
 
@@ -100,8 +100,7 @@ public class TodoService {
      * @param todoId
      * @return
      */
-    public boolean isTodoItemIdValid(long todoId)
-    {
+    public boolean isTodoItemIdValid(long todoId) {
         return todoRepository.findById(todoId).isPresent();
     }
 
