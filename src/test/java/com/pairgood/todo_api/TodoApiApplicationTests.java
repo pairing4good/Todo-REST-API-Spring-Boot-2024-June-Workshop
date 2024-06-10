@@ -48,7 +48,8 @@ public class TodoApiApplicationTests {
 
         createTodo();
 
-        List<LinkedHashMap> responseList = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todolist", List.class);
+        List<LinkedHashMap> responseList = testRestTemplate.getForObject("http://localhost:" + port +
+                "/api/v1/todo/todolist", List.class);
 
         assertNotNull(responseList);
         assertTrue(responseList.size() > 0);
@@ -57,9 +58,25 @@ public class TodoApiApplicationTests {
 
     private void createTodo() {
         counter += 1;
-        Todo todo = new Todo(0, "Spring Testing Session" + counter, "Spring Testing" + counter, false, LocalDate.now(), null, null);
-        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port + "/api/v1/todo/additem", todo, ResponseTodoList.class);
+        Todo todo = new Todo(0, "Spring Testing Session" + counter, "Spring Testing" +
+                counter, false, LocalDate.now(), null, null);
+        ResponseEntity<ResponseTodoList> response = testRestTemplate.postForEntity("http://localhost:" + port +
+                "/api/v1/todo/additem", todo, ResponseTodoList.class);
         assertEquals(201, response.getStatusCode().value());
+
+    }
+
+    @Test
+    void shouldUpdateItem() {
+        createTodo();
+        Todo updatetodo = new Todo(0, "Spring Testing Session updated", "Spring Testing updation", false, LocalDate.now(), null, null);
+        testRestTemplate.put("http://localhost:" + port + "/api/v1/todo/updateitem/1110", updatetodo);
+        List<LinkedHashMap> responseList = testRestTemplate.getForObject("http://localhost:" + port +
+                "/api/v1/todo/todolist", List.class);
+        assertEquals(1110, responseList.get(0).get("todoId"));
+        assertEquals("Spring Testing Session updated", responseList.get(0).get("todoTitle"));
+        assertEquals("Spring Testing updation", responseList.get(0).get("todoDescription"));
+
 
     }
 
