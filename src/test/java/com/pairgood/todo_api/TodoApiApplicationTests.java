@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +47,20 @@ public class TodoApiApplicationTests {
 	}
 @Test
 void shouldGetToDoList(){
-	List<Todo> response=testRestTemplate.getForObject("http://localhost:"+port+"/api/v1/todo/getitem", List.class);
+
+	Todo todo= new Todo(0,"Spring Testing Session","Spring Testing",false, LocalDate.now(),null,null);
+	Todo todoTwo= new Todo(0,"Spring Testing Session two","Spring Testing two",false, LocalDate.now(),null,null);
+	ResponseEntity<ResponseTodoList> response=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todo, ResponseTodoList.class);
+	ResponseEntity<ResponseTodoList> response2=testRestTemplate.postForEntity("http://localhost:"+port+"/api/v1/todo/additem",todoTwo, ResponseTodoList.class);
+
+	List<LinkedHashMap> responseList= testRestTemplate.getForObject("http://localhost:"+port+"/api/v1/todo/todolist", List.class);
+	assertNotNull(responseList);
+
+    int size = responseList.size();
+	Assertions.assertTrue(size >= 2);
+
+	assertEquals(1110,responseList.get(0).get("todoId"));
+
 
 
 }
