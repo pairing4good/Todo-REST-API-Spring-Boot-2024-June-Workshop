@@ -94,4 +94,18 @@ public class TodoApiApplicationTests {
 
     }
 
+    @Test
+    void shouldCountTodos() {
+        long previousCount = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todocount",
+                Long.class);
+        createTodo();
+        long afterCount = testRestTemplate.getForObject("http://localhost:" + port + "/api/v1/todo/todocount",
+                Long.class);
+        assertEquals(previousCount + 1, afterCount);
+
+    }
+
+
+
+
 }
