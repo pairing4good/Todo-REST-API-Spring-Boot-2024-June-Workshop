@@ -7,17 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 @RestController
 @RequestMapping(TodoController.BASE_URL)
 public class TodoController {
     public static final String BASE_URL = "api/v1/todo";
-    private static final Logger logger = Logger.getLogger(TodoController.class.getName());
+    private final Logger logger ;
 
+    private final TodoService todoService;
     @Autowired
-    private TodoService todoService;
-
+    public TodoController(final TodoService todoService, final Logger logger ) {
+        this.todoService = todoService;
+        this.logger=logger;
+    }
     @RequestMapping(method = RequestMethod.POST, value = "/additem")
     public ResponseEntity<ResponseTodoList> AddItemTolist(@Valid @RequestBody Todo todo) {
 
